@@ -1,0 +1,74 @@
+# This script demonstrates web scraping of data from multiple websites
+# and building a data analysis dashboard to visualize the collected data.
+
+import requests
+from bs4 import BeautifulSoup
+import json
+import matplotlib.pyplot as plt
+
+# Function to scrape data from a website
+def scrape_website(url):
+    # Send a GET request to the URL
+    response = requests.get(url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Example: Scraping data - extract titles of articles from a news website
+        article_titles = []
+        for article in soup.find_all('article'):
+            title = article.find('h2').get_text()
+            article_titles.append(title)
+        
+        return article_titles
+    else:
+        # Print an error message if the request was unsuccessful
+        print(f"Failed to retrieve data from {url}")
+        return None
+
+# URLs of websites to scrape
+urls = ['https://example.com/news', 'https://anotherexample.com/articles']
+
+# Scraping data from each website
+scraped_data = []
+for url in urls:
+    data = scrape_website(url)
+    if data:
+        scraped_data.extend(data)
+
+# Saving scraped data to a JSON file
+with open('scraped_data.json', 'w') as f:
+    json.dump(scraped_data, f)
+
+# Plotting the distribution of article lengths
+article_lengths = [len(title) for title in scraped_data]
+plt.hist(article_lengths, bins=10, edgecolor='black')
+plt.title('Distribution of Article Title Lengths')
+plt.xlabel('Length of Article Title')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Importing Libraries: Importing necessary libraries (requests, BeautifulSoup for web scraping, json for JSON operations, matplotlib.pyplot for data visualization).
+Scraping Function (scrape_website): Defines a function to scrape article titles from a given URL using requests and BeautifulSoup.
+Loop through URLs: Iterates through a list of URLs to scrape data from multiple websites.
+Error Handling: Checks if the request to each URL was successful and handles errors gracefully.
+Saving Data: Saves the collected data (article titles) to a JSON file (scraped_data.json).
+Data Visualization: Plots a histogram showing the distribution of article title lengths using matplotlib.
+"""
+
+
+"""
+NOTIONS COVERED
+
+HTTP Requests: Uses the requests module to fetch HTML content from websites.
+RESTful APIs: Demonstrates interaction with web resources (websites) through HTTP.
+JSON Handling: Stores scraped data in JSON format (json.dump).
+Data Visualization: Uses matplotlib to create a histogram for visualizing data.
+"""
