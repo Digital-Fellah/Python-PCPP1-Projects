@@ -1,0 +1,80 @@
+# Error Handler Simulator
+# This program simulates various error scenarios and demonstrates advanced exception handling techniques.
+
+import random
+
+# Define custom exception classes
+class CustomError(Exception):
+    """Base class for custom exceptions."""
+    pass
+
+class CriticalError(CustomError):
+    """Exception raised for critical errors."""
+    pass
+
+class NetworkError(CustomError):
+    """Exception raised for network-related errors."""
+    pass
+
+class DatabaseError(CustomError):
+    """Exception raised for database-related errors."""
+    pass
+
+# Function to simulate different error scenarios
+def simulate_error_scenario():
+    # Randomly select an error scenario
+    error_code = random.randint(1, 4)
+
+    if error_code == 1:
+        raise CriticalError("Critical error occurred!")
+    elif error_code == 2:
+        raise NetworkError("Network connection failed!")
+    elif error_code == 3:
+        raise DatabaseError("Database query failed!")
+    else:
+        raise ValueError("Invalid input error!")
+
+# Main function to run the error simulation
+def run_error_simulation():
+    try:
+        simulate_error_scenario()
+    except CriticalError as e:
+        print(f"Caught a CriticalError: {e}")
+        # Log or handle the critical error scenario
+    except NetworkError as e:
+        print(f"Caught a NetworkError: {e}")
+        # Attempt to reconnect or log network-related issues
+    except DatabaseError as e:
+        print(f"Caught a DatabaseError: {e}")
+        # Retry the database operation or log the failure
+    except CustomError as e:
+        print(f"Caught a CustomError: {e}")
+        # Handle other custom errors
+    except Exception as e:
+        print(f"Caught an unexpected error: {e}")
+        # Handle any other unexpected errors
+
+# Run the error simulation
+run_error_simulation()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The code simulates various error scenarios using custom exception classes and a random error generator.
+Each exception class (CustomError, CriticalError, NetworkError, DatabaseError) inherits from Exception, demonstrating the concept of subclassing built-in classes.
+The simulate_error_scenario() function randomly raises one of the defined custom exceptions.
+The run_error_simulation() function wraps the error simulation in a try-except block to handle specific custom errors (CriticalError, NetworkError, DatabaseError) and a generic CustomError catch-all.
+It also includes an Exception catch-all to handle any unexpected errors that might occur.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Advanced techniques for creating and serving exceptions
+Custom exception classes with named attributes
+Chained exceptions (handling different exception types)
+Traceback objects (Exception as a base for catching all unexpected errors)
+Implicitly and explicitly chained exceptions
+"""
