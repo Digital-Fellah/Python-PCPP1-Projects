@@ -1,0 +1,77 @@
+# XML Adventure Log
+# This program allows users to manage an adventure log using XML format.
+
+import xml.etree.ElementTree as ET
+import os
+
+# Function to create a new XML file for adventure logs if it doesn't exist
+def create_xml_file(xml_file):
+    if not os.path.exists(xml_file):
+        root = ET.Element("AdventureLog")
+        tree = ET.ElementTree(root)
+        tree.write(xml_file)
+
+# Function to add a new log entry to the XML file
+def add_log_entry(xml_file, date, location, activities):
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+    
+    # Create new entry
+    entry = ET.SubElement(root, "LogEntry")
+    ET.SubElement(entry, "Date").text = date
+    ET.SubElement(entry, "Location").text = location
+    ET.SubElement(entry, "Activities").text = activities
+    
+    tree.write(xml_file)
+
+# Function to search for log entries based on a specific criteria
+def search_log_entries(xml_file, criteria):
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+    
+    found_entries = []
+    for entry in root.findall("LogEntry"):
+        if criteria.lower() in entry.find("Activities").text.lower():
+            found_entries.append(entry)
+    
+    return found_entries
+
+# Main program
+if __name__ == "__main__":
+    xml_file = "adventure_log.xml"
+    
+    # Create XML file if it doesn't exist
+    create_xml_file(xml_file)
+    
+    # Add sample log entries
+    add_log_entry(xml_file, "2024-07-08", "Forest", "Explored ancient ruins")
+    add_log_entry(xml_file, "2024-07-09", "Mountains", "Climbed to the summit")
+    
+    # Search for log entries containing "ruins"
+    results = search_log_entries(xml_file, "ruins")
+    print("Search Results:")
+    for entry in results:
+        date = entry.find("Date").text
+        location = entry.find("Location").text
+        activities = entry.find("Activities").text
+        print(f"Date: {date}, Location: {location}, Activities: {activities}")
+
+
+"""
+EXPLANATION OF THE CODE
+
+The code begins by importing the necessary module xml.etree.ElementTree for XML processing and os for file operations.
+create_xml_file(xml_file): Checks if the XML file exists; if not, creates a new XML structure with the root element "AdventureLog".
+add_log_entry(xml_file, date, location, activities): Adds a new log entry to the XML file with attributes like date, location, and activities.
+search_log_entries(xml_file, criteria): Searches for log entries based on a given criteria (in this case, part of the activities text).
+The main section initializes the XML file, adds sample log entries, and demonstrates searching for log entries containing "ruins".
+"""
+
+
+"""
+NOTIONS COVERED
+
+XML Parsing: Uses xml.etree.ElementTree to parse and manipulate XML documents (ET.parse, ET.SubElement).
+XML Construction: Constructs XML documents by creating elements (ET.SubElement).
+Searching XML: Uses find and findall methods to search for specific elements (find, findall methods).
+"""
