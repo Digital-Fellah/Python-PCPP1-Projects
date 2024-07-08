@@ -1,0 +1,63 @@
+# Toy Factory with Shallow and Deep Copy Operations
+# This program simulates a toy factory where different toy prototypes are managed using shallow and deep copy operations.
+
+import copy
+
+# Define a class for a Toy prototype
+class ToyPrototype:
+    def __init__(self, name, materials):
+        self.name = name  # Name of the toy
+        self.materials = materials  # Materials used to make the toy
+
+# Create an instance of ToyPrototype as the original toy
+original_toy = ToyPrototype("Teddy Bear", ["Fabric", "Stuffing"])
+
+# Perform a shallow copy of the original toy
+shallow_copy_toy = copy.copy(original_toy)
+
+# Perform a deep copy of the original toy
+deep_copy_toy = copy.deepcopy(original_toy)
+
+# Modify the materials list in the shallow copy
+shallow_copy_toy.materials.append("Thread")
+
+# Modify the materials list in the deep copy
+deep_copy_toy.materials.append("Buttons")
+
+# Print original toy details
+print("Original Toy:")
+print(f"Name: {original_toy.name}")
+print(f"Materials: {original_toy.materials}")
+
+# Print shallow copy details
+print("\nShallow Copy Toy:")
+print(f"Name: {shallow_copy_toy.name}")
+print(f"Materials: {shallow_copy_toy.materials}")
+
+# Print deep copy details
+print("\nDeep Copy Toy:")
+print(f"Name: {deep_copy_toy.name}")
+print(f"Materials: {deep_copy_toy.materials}")
+
+
+"""
+EXPLANATION OF THE CODE
+
+ToyPrototype class: Defines a prototype for toys with attributes name and materials.
+original_toy: Creates an instance of ToyPrototype representing the original toy prototype.
+shallow_copy_toy: Performs a shallow copy of original_toy using copy.copy().
+deep_copy_toy: Performs a deep copy of original_toy using copy.deepcopy().
+Modifications:
+shallow_copy_toy.materials.append("Thread"): Modifies the materials list of the shallow copy.
+deep_copy_toy.materials.append("Buttons"): Modifies the materials list of the deep copy.
+Printing:
+Prints details of original_toy, shallow_copy_toy, and deep_copy_toy to observe changes.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Shallow and deep copy operations
+Object identity vs. value
+"""
