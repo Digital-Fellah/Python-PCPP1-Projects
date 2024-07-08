@@ -1,0 +1,47 @@
+import tkinter as tk
+from time import strftime
+
+# Create a Tkinter main window
+root = tk.Tk()
+root.title("Digital Clock")  # Set the title of the window
+
+# Function to update time
+def update_time():
+    current_time = strftime('%H:%M:%S %p')  # Get current time in 12-hour format
+    time_label.config(text=current_time)    # Update the Label text with current time
+    root.after(1000, update_time)           # Update time every second (1000 milliseconds)
+
+# Create a Label widget to display time
+time_label = tk.Label(root, font=('calibri', 40, 'bold'), background='black', foreground='cyan')
+
+# Pack the Label widget into the main window
+time_label.pack(anchor='center')
+
+# Initial call to update time function
+update_time()
+
+# Start the Tkinter main loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Imports: Import necessary modules (tkinter for GUI and time.strftime for time formatting).
+Tkinter Window: Create the main window (root) and set its title.
+update_time Function: Defines a function to update the current time and update the Label widget (time_label) with the formatted time using strftime.
+Label Widget (time_label): Creates a Label widget to display the time. Configures font, background, and foreground color, and packs it into the main window (root).
+Initial Update: Calls update_time function to initially display the time.
+Mainloop: Starts the Tkinter event loop to handle events and keep the GUI responsive.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Creating the main window (Tk())
+Using widgets (Label)
+Updating time using after() method for event-driven updates
+Event handling (mainloop())
+Basic event-driven programming
+"""
