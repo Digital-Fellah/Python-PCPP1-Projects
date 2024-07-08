@@ -1,0 +1,76 @@
+"""
+Magic Bookstore with Python Core Syntax
+
+This program simulates a simple bookstore management system where books and customers 
+are represented as objects. It demonstrates the use of magic methods for comparison, 
+string representation, and attribute access.
+
+"""
+
+class Book:
+    def __init__(self, title, author, price):
+        self.title = title
+        self.author = author
+        self.price = price
+
+    def __str__(self):
+        return f"{self.title} by {self.author}, ${self.price}"
+
+    def __eq__(self, other):
+        return self.title == other.title and self.author == other.author
+
+    def __getattr__(self, attribute):
+        if attribute == 'description':
+            return f"{self.title} is written by {self.author} and costs ${self.price}."
+        else:
+            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{attribute}'")
+
+class Customer:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+    def __str__(self):
+        return f"Customer: {self.name}, Email: {self.email}"
+
+# Sample usage of the classes
+if __name__ == "__main__":
+    # Creating book objects
+    book1 = Book("Harry Potter", "J.K. Rowling", 25.0)
+    book2 = Book("The Hobbit", "J.R.R. Tolkien", 30.0)
+    book3 = Book("Harry Potter", "J.K. Rowling", 25.0)  # Same as book1
+    
+    # Using magic methods
+    print(book1)  # Output: Harry Potter by J.K. Rowling, $25.0
+    print(book1 == book3)  # Output: True (because they have the same title and author)
+    
+    # Attribute access
+    print(book2.description)  # Output: The Hobbit is written by J.R.R. Tolkien and costs $30.0.
+
+    # Creating customer objects
+    customer1 = Customer("Alice", "alice@example.com")
+    customer2 = Customer("Bob", "bob@example.com")
+
+    # String representation
+    print(customer1)  # Output: Customer: Alice, Email: alice@example.com
+
+
+"""
+EXPLANATION OF THE CODE
+
+The code defines two classes: Book and Customer.
+The Book class represents a book with attributes title, author, and price. It includes magic methods __str__() for string representation, __eq__() for equality comparison based on title and author, and __getattr__() for dynamic attribute access.
+The Customer class represents a customer with attributes name and email. It includes __str__() for string representation.
+Instances of Book and Customer are created, demonstrating the usage of magic methods for string representation, comparison, and attribute access.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Magic methods (__str__(), __eq__(), __getattr__())
+Object introspection (via __getattr__())
+Object attribute access (__getattr__())
+Special methods (__str__())
+Operator overloading
+"""
