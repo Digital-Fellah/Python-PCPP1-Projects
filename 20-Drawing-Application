@@ -1,0 +1,82 @@
+# Drawing Application
+# This program creates a basic drawing application where users can draw shapes on a canvas.
+# It includes tools for drawing lines, circles, and rectangles, as well as color selection.
+
+import tkinter as tk
+from tkinter import colorchooser
+
+# Function to draw a line on the canvas
+def draw_line(event):
+    global last_x, last_y
+    canvas.create_line(last_x, last_y, event.x, event.y, width=2, fill=current_color)
+    last_x, last_y = event.x, event.y
+
+# Function to draw a circle on the canvas
+def draw_circle(event):
+    global last_x, last_y
+    canvas.create_oval(last_x, last_y, event.x, event.y, width=2, outline=current_color)
+    last_x, last_y = event.x, event.y
+
+# Function to draw a rectangle on the canvas
+def draw_rectangle(event):
+    global last_x, last_y
+    canvas.create_rectangle(last_x, last_y, event.x, event.y, width=2, outline=current_color)
+    last_x, last_y = event.x, event.y
+
+# Function to change the drawing color
+def change_color():
+    global current_color
+    color = colorchooser.askcolor()[1]  # Opens a color chooser dialog and returns the chosen color
+    if color:
+        current_color = color
+
+# Initialize main window
+root = tk.Tk()
+root.title("Drawing Application")
+
+# Create canvas widget
+canvas = tk.Canvas(root, width=600, height=400, bg="white")
+canvas.pack()
+
+# Bind mouse events to drawing functions
+canvas.bind("<Button-1>", lambda event: draw_line(event))
+canvas.bind("<B1-Motion>", lambda event: draw_line(event))
+canvas.bind("<Button-3>", lambda event: draw_circle(event))
+canvas.bind("<B3-Motion>", lambda event: draw_circle(event))
+canvas.bind("<Shift-Button-1>", lambda event: draw_rectangle(event))
+canvas.bind("<Shift-B1-Motion>", lambda event: draw_rectangle(event))
+
+# Create color change button
+color_button = tk.Button(root, text="Change Color", command=change_color)
+color_button.pack(pady=10)
+
+# Global variables
+current_color = "black"
+last_x, last_y = 0, 0
+
+# Start main loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The program starts by importing the necessary modules (tkinter for GUI, colorchooser for color selection).
+Functions like draw_line, draw_circle, and draw_rectangle handle the drawing of respective shapes on the canvas based on mouse events.
+The change_color function utilizes colorchooser.askcolor() to let users select a drawing color.
+The main window (Tk()), canvas (Canvas), and color change button (Button) are initialized and packed into the GUI layout.
+Mouse event bindings (bind) are set up to trigger drawing functions based on left-click, right-click, and shift-left-click events.
+Global variables (current_color, last_x, last_y) are used to keep track of the current drawing color and the last position of the mouse.
+The program enters the main event loop (mainloop()), where it waits for user interaction.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Creating the main window (Tk()), canvas (Canvas).
+Drawing shapes (create_line, create_oval, create_rectangle).
+Event handling (bind) for mouse events (<Button-1>, <B1-Motion>, etc.).
+Color selection using colorchooser.
+Basic features of GUI programming in tkinter.
+"""
