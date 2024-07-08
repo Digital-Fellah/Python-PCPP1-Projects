@@ -1,0 +1,114 @@
+"""
+Online Auction House with Object Serialization
+
+This program simulates an online auction house where users can list items for sale and bid on items.
+It uses object serialization to persist auction listings and bids across sessions.
+
+"""
+
+import pickle
+
+class Item:
+    def __init__(self, name, description, starting_bid):
+        self.name = name
+        self.description = description
+        self.starting_bid = starting_bid
+        self.current_bid = starting_bid
+        self.bids = []
+
+    def place_bid(self, bidder, amount):
+        if amount > self.current_bid:
+            self.current_bid = amount
+            self.bids.append((bidder, amount))
+            print(f"Bid placed successfully by {bidder} for ${amount}.")
+        else:
+            print(f"Bid of ${amount} is not higher than current bid of ${self.current_bid}.")
+
+    def __str__(self):
+        return f"{self.name}: {self.description}\nCurrent Bid: ${self.current_bid}"
+
+class AuctionHouse:
+    def __init__(self):
+        self.items_for_sale = {}
+
+    def add_item(self, item_id, item):
+        self.items_for_sale[item_id] = item
+
+    def remove_item(self, item_id):
+        if item_id in self.items_for_sale:
+            del self.items_for_sale[item_id]
+            print(f"Item with ID {item_id} has been removed.")
+        else:
+            print(f"Item with ID {item_id} not found.")
+
+    def list_items(self):
+        for item_id, item in self.items_for_sale.items():
+            print(f"Item ID: {item_id}, {item}")
+
+    def bid_on_item(self, item_id, bidder, amount):
+        if item_id in self.items_for_sale:
+            item = self.items_for_sale[item_id]
+            item.place_bid(bidder, amount)
+        else:
+            print(f"Item with ID {item_id} not found.")
+
+    def save_auction_data(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self.items_for_sale, f)
+        print(f"Auction data saved to {filename}.")
+
+    def load_auction_data(self, filename):
+        try:
+            with open(filename, 'rb') as f:
+                self.items_for_sale = pickle.load(f)
+            print(f"Auction data loaded from {filename}.")
+        except FileNotFoundError:
+            print(f"File {filename} not found. Starting with an empty auction house.")
+        except Exception as e:
+            print(f"Error loading data from {filename}: {e}")
+
+# Example usage:
+auction = AuctionHouse()
+
+# Adding items to the auction house
+item1 = Item("Painting", "A beautiful landscape painting", 100)
+item2 = Item("Antique Vase", "An ancient porcelain vase", 200)
+auction.add_item(1, item1)
+auction.add_item(2, item2)
+
+# Listing available items
+auction.list_items()
+
+# Placing bids on items
+auction.bid_on_item(1, "John", 150)
+auction.bid_on_item(2, "Emma", 250)
+auction.bid_on_item(1, "Alice", 200)
+
+# Saving and loading auction data
+auction.save_auction_data("auction_data.pkl")
+auction.load_auction_data("auction_data.pkl")
+
+# Listing items after loading data
+print("\nAfter loading data:")
+auction.list_items()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Item class: Represents an item for auction with attributes like name, description, starting bid, current bid, and bids list. It has methods to place bids and a __str__ method for string representation.
+AuctionHouse class: Manages the collection of items (items_for_sale). It provides methods to add/remove items, list available items, place bids on items, and save/load auction data using object serialization (pickle module).
+Example usage: Creates an AuctionHouse instance, adds items (item1, item2), lists items, places bids, saves auction data to a file (auction_data.pkl), and loads auction data from the file.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Object serialization (using pickle module)
+Class design with Item and AuctionHouse classes
+Instance variables (items_for_sale, current_bid, bids)
+Instance methods (__init__, place_bid, __str__, add_item, remove_item, list_items, bid_on_item, save_auction_data, load_auction_data)
+Special methods (__str__)
+Handling file operations (open, close, file handling exceptions)
+"""
