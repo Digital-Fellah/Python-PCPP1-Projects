@@ -1,0 +1,73 @@
+# Decorator Dungeon Adventure
+# This program simulates a text-based dungeon adventure game where decorators
+# enhance player actions and game mechanics.
+
+# Define decorator to simulate potion effects
+def consume_potion(func):
+    def wrapper(player, *args, **kwargs):
+        # Increase player health by 20 points
+        player.health += 20
+        print(f"{player.name} consumes a healing potion and gains 20 health points!")
+        # Execute the original function
+        return func(player, *args, **kwargs)
+    return wrapper
+
+# Define decorator to simulate stamina drain
+def drain_stamina(func):
+    def wrapper(player, *args, **kwargs):
+        # Decrease player stamina by 10 points
+        player.stamina -= 10
+        print(f"{player.name} performs a strenuous action and loses 10 stamina points!")
+        # Execute the original function
+        return func(player, *args, **kwargs)
+    return wrapper
+
+# Define player class
+class Player:
+    def __init__(self, name, health=100, stamina=100):
+        self.name = name
+        self.health = health
+        self.stamina = stamina
+
+    @consume_potion
+    def attack(self):
+        # Simulate attack action
+        print(f"{self.name} attacks the enemy!")
+
+    @drain_stamina
+    def defend(self):
+        # Simulate defend action
+        print(f"{self.name} defends against the enemy!")
+
+# Create a player instance
+def main():
+    player1 = Player("Hero")
+
+    # Simulate game actions
+    player1.attack()
+    player1.defend()
+    player1.attack()
+
+if __name__ == "__main__":
+    main()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The program defines two decorators, consume_potion and drain_stamina, which modify player actions.
+A Player class is defined with __init__ method to initialize player attributes.
+Decorators (consume_potion and drain_stamina) are applied to attack and defend methods of the Player class.
+In the main function, a Player instance is created and actions (attack and defend) are simulated.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Decorators (function decorators)
+Syntactic sugar (using decorators to modify methods)
+Special methods (__call__() in decorators)
+Function parameter handling (decorators take function parameters and pass them through)
+Closures (inner functions wrapper in decorators capture and use variables from outer functions)
+"""
