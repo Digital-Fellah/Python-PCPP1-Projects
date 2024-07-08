@@ -1,0 +1,93 @@
+"""
+This program simulates an Art Gallery management system using Python classes and abstract methods.
+
+It defines abstract classes for Artwork and Artist, and concrete classes for specific types of artwork like Painting and Sculpture.
+Each artwork has attributes such as title, artist, and medium, and methods to display information and calculate value.
+
+"""
+
+from abc import ABC, abstractmethod  # Importing ABC (Abstract Base Class) and abstractmethod from abc module
+
+
+class Artwork(ABC):
+    def __init__(self, title, artist):
+        self.title = title
+        self.artist = artist
+    
+    @abstractmethod
+    def display_info(self):
+        pass
+    
+    @abstractmethod
+    def calculate_value(self):
+        pass
+
+
+class Painting(Artwork):
+    def __init__(self, title, artist, medium):
+        super().__init__(title, artist)
+        self.medium = medium
+    
+    def display_info(self):
+        return f"Title: {self.title}\nArtist: {self.artist}\nMedium: {self.medium}"
+    
+    def calculate_value(self):
+        # Simulated calculation based on medium and artist's reputation
+        if self.medium == "oil":
+            return 1000
+        elif self.medium == "watercolor":
+            return 500
+        else:
+            return 200
+
+
+class Sculpture(Artwork):
+    def __init__(self, title, artist, material):
+        super().__init__(title, artist)
+        self.material = material
+    
+    def display_info(self):
+        return f"Title: {self.title}\nArtist: {self.artist}\nMaterial: {self.material}"
+    
+    def calculate_value(self):
+        # Simulated calculation based on material and artist's reputation
+        if self.material == "marble":
+            return 2000
+        elif self.material == "bronze":
+            return 1500
+        else:
+            return 800
+
+
+# Example usage:
+if __name__ == "__main__":
+    painting = Painting("Starry Night", "Vincent van Gogh", "oil")
+    sculpture = Sculpture("David", "Michelangelo", "marble")
+    
+    print("Painting Info:")
+    print(painting.display_info())
+    print(f"Estimated Value: ${painting.calculate_value()}")
+    print("\nSculpture Info:")
+    print(sculpture.display_info())
+    print(f"Estimated Value: ${sculpture.calculate_value()}")
+
+
+"""
+EXPLANATION OF THE CODE
+
+The code defines abstract classes for Artwork and concrete classes Painting and Sculpture.
+Each artwork class (Painting and Sculpture) inherits from Artwork and implements its own display_info() and calculate_value() methods.
+The display_info() method provides information about the artwork, including title, artist, and specific attributes like medium or material.
+The calculate_value() method simulates the calculation of the artwork's value based on its medium/material and the reputation of the artist.
+Example instances of Painting and Sculpture are created and their information is displayed along with their estimated value.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Abstract classes and abstract methods
+Inheritance (subclassing Artwork)
+Method overriding (display_info() and calculate_value() methods)
+Polymorphism (different behavior of calculate_value() in Painting and Sculpture)
+"""
