@@ -1,0 +1,49 @@
+# Game AI with Subclassing Built-in Classes
+# This program implements a basic AI opponent for a simple game by subclassing built-in Python classes.
+
+import random
+
+# Define a subclass of list to represent the AI opponent's strategy choices
+class GameAI(list):
+    def __init__(self, choices):
+        # Initialize the subclass with a list of possible choices
+        super().__init__(choices)
+    
+    def make_choice(self):
+        # Randomly select a choice from the list of strategies
+        return random.choice(self)
+
+# Example usage:
+if __name__ == "__main__":
+    # Define strategies for the AI
+    strategies = ["Aggressive", "Defensive", "Balanced"]
+    
+    # Create an instance of GameAI with the defined strategies
+    ai = GameAI(strategies)
+    
+    # AI makes a choice
+    ai_choice = ai.make_choice()
+    
+    # Print the AI's selected strategy
+    print(f"The AI chose: {ai_choice}")
+
+
+"""
+EXPLANATION OF THE CODE
+
+Define a subclass GameAI of the built-in list class to represent AI strategies.
+Constructor (__init__): Initializes the subclass with a list of strategy choices.
+Method make_choice: Randomly selects a strategy from the list of choices.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Subclassing built-in classes (list subclass for GameAI).
+Extending class features and methods (adding make_choice method).
+Customizing class methods and attributes (__init__ for initialization).
+Implementing AI behavior using strategy selection.
+Demonstrating AI decision-making using polymorphism (method make_choice).
+Enhancing game dynamics through subclassed behavior (AI strategy selection).
+"""
