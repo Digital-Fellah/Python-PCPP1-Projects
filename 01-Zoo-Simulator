@@ -1,0 +1,83 @@
+"""
+Zoo Simulator with Object-Oriented Programming
+
+This program simulates a virtual zoo where different types of animals are represented as classes.
+It demonstrates object-oriented concepts such as classes, inheritance, polymorphism, and composition.
+
+"""
+
+class Animal:
+    def __init__(self, name, species):
+        self.name = name  # Attribute: name of the animal
+        self.species = species  # Attribute: species of the animal
+
+    def sound(self):
+        return "Generic animal sound"  # Method: produces a generic sound for any animal
+
+    def __str__(self):
+        return f"{self.name} is a {self.species}"  # Magic Method: provides a string representation of the animal
+
+class Mammal(Animal):
+    def __init__(self, name):
+        super().__init__(name, "Mammal")  # Inheritance: inherits from Animal class with species set to "Mammal"
+
+    def sound(self):
+        return "Mammal sound"  # Polymorphism: overrides sound method to produce mammal-specific sound
+
+class Bird(Animal):
+    def __init__(self, name):
+        super().__init__(name, "Bird")  # Inheritance: inherits from Animal class with species set to "Bird"
+
+    def sound(self):
+        return "Bird sound"  # Polymorphism: overrides sound method to produce bird-specific sound
+
+class Zoo:
+    def __init__(self):
+        self.animals = []  # Instance Variable: list to store animals in the zoo
+
+    def add_animal(self, animal):
+        self.animals.append(animal)  # Method: adds an animal to the zoo
+
+    def list_animals(self):
+        for animal in self.animals:
+            print(animal)  # Accessing Instance Variable: prints each animal using the __str__ method
+
+# Creating instances of animals
+lion = Mammal("Simba")
+parrot = Bird("Polly")
+elephant = Mammal("Dumbo")
+
+# Creating a zoo instance
+my_zoo = Zoo()
+
+# Adding animals to the zoo
+my_zoo.add_animal(lion)
+my_zoo.add_animal(parrot)
+my_zoo.add_animal(elephant)
+
+# Listing animals in the zoo
+print("Animals in the zoo:")
+my_zoo.list_animals()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Defines classes Animal, Mammal, Bird, and Zoo to represent animals and manage the zoo.
+Animal class initializes with name and species attributes, and includes sound() and __str__() methods.
+Mammal and Bird classes inherit from Animal, setting species to "Mammal" and "Bird" respectively, and override the sound() method.
+Zoo class manages a list of animals (self.animals), with methods to add_animal() and list_animals().
+"""
+
+
+"""
+NOTIONS COVERED
+
+Classes, instances, objects
+Attributes, methods
+Type, instance, and class variables
+Superclasses and subclasses
+__init__() method
+isinstance(), issubclass()
+Inheritance, polymorphism, composition
+"""
