@@ -1,0 +1,86 @@
+# Simple Music Player
+# This program is a basic music player GUI where users can load and play audio files.
+
+import tkinter as tk
+from tkinter import filedialog
+import pygame
+
+class MusicPlayer:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Music Player")  # Set the title of the main window
+        self.root.geometry("400x200")    # Set the initial size of the main window
+
+        # Initialize pygame mixer
+        pygame.mixer.init()
+
+        # Create a label to display status messages
+        self.status_label = tk.Label(self.root, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+        self.status_label.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # Create buttons for control
+        self.load_button = tk.Button(self.root, text="Load Song", command=self.load_song)
+        self.load_button.pack(pady=20)
+
+        self.play_button = tk.Button(self.root, text="Play", command=self.play_music, state=tk.DISABLED)
+        self.play_button.pack(pady=10)
+
+        self.pause_button = tk.Button(self.root, text="Pause", command=self.pause_music, state=tk.DISABLED)
+        self.pause_button.pack(pady=10)
+
+        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_music, state=tk.DISABLED)
+        self.stop_button.pack(pady=10)
+
+    def load_song(self):
+        """Open a file dialog to select a music file."""
+        self.song_path = filedialog.askopenfilename(filetypes=[("MP3 files", "*.mp3")])
+        if self.song_path:
+            self.status_label.config(text=f"Selected: {self.song_path}")
+            self.play_button.config(state=tk.NORMAL)  # Enable the play button after loading a song
+
+    def play_music(self):
+        """Start playing the loaded music."""
+        pygame.mixer.music.load(self.song_path)
+        pygame.mixer.music.play(loops=0)
+        self.status_label.config(text=f"Now playing: {self.song_path}")
+        self.stop_button.config(state=tk.NORMAL)  # Enable stop and pause buttons while music is playing
+        self.pause_button.config(state=tk.NORMAL)
+
+    def pause_music(self):
+        """Pause the currently playing music."""
+        pygame.mixer.music.pause()
+        self.status_label.config(text="Music paused.")
+
+    def stop_music(self):
+        """Stop the currently playing music."""
+        pygame.mixer.music.stop()
+        self.status_label.config(text="Music stopped.")
+        self.play_button.config(state=tk.NORMAL)  # Enable play button again after stopping
+
+root = tk.Tk()
+music_player = MusicPlayer(root)
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The program creates a simple music player GUI using tkinter and pygame libraries.
+It initializes a tkinter window (Tk() instance) and sets up widgets such as buttons (Button widget) and a status label (Label widget).
+Users can load an MP3 file using the "Load Song" button which opens a file dialog (filedialog.askopenfilename).
+Once a song is loaded, the "Play", "Pause", and "Stop" buttons become active (config(state=tk.NORMAL)).
+The music playback functionality is handled by pygame (pygame.mixer.music), which loads and plays the selected MP3 file.
+Status messages are displayed in the status label (Label) to indicate the current state of music playback.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Widgets (Button, Label)
+Event handling (button clicks - command= parameter)
+Audio playback (pygame.mixer)
+Volume control and playback control (play, pause, stop)
+Basic animations (status message updates)
+Integration of external libraries (tkinter, pygame)
+"""
