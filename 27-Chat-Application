@@ -1,0 +1,93 @@
+# Simple Chat Application using Sockets
+# This program demonstrates a basic chat application where multiple clients can connect to a server
+# and exchange messages in real-time.
+
+import socket
+import threading
+
+# Function to handle each client separately
+def handle_client(client_socket, client_address):
+    print(f"[NEW CONNECTION] {client_address} connected.")
+
+    # Loop to continuously receive messages from the client
+    while True:
+        try:
+            # Receive message from client
+            message = client_socket.recv(1024).decode('utf-8')
+            if not message:
+                break
+            
+            # Print the received message
+            print(f"[{client_address}] {message}")
+
+            # Echo the message back to the client
+            client_socket.sendall(message.encode('utf-8'))
+        
+        except Exception as e:
+            print(f"[EXCEPTION] {client_address} disconnected: {e}")
+            break
+
+    # Close client connection
+    client_socket.close()
+    print(f"[DISCONNECTED] {client_address} disconnected.")
+
+# Main function to start the server
+def start_chat_server():
+    # Define server settings
+    host = '127.0.0.1'  # Localhost
+    port = 5555  # Arbitrary port number
+
+    # Create a socket object
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the address and port
+    server_socket.bind((host, port))
+
+    # Start listening for incoming connections
+    server_socket.listen()
+
+    print(f"[LISTENING] Server is listening on {host}:{port}")
+
+    try:
+        while True:
+            # Accept incoming connection
+            client_socket, client_address = server_socket.accept()
+            
+            # Create a thread to handle the client
+            client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
+            client_thread.start()
+            
+            print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+
+    except KeyboardInterrupt:
+        print("[SERVER STOPPED] Server stopped by the user.")
+
+    finally:
+        # Close the server socket
+        server_socket.close()
+
+# Start the chat server
+start_chat_server()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Importing necessary modules: The socket and threading modules are imported for socket programming and managing multiple threads respectively.
+handle_client function: This function is responsible for handling each client connection. It receives messages from the client, prints them, echoes them back to the client, and handles exceptions.
+start_chat_server function: Sets up the server socket, binds it to a specific host and port, and starts listening for incoming connections. It creates a new thread for each client connection to handle concurrent clients.
+Socket operations: Socket is created using socket.socket(), bound to an address with bind(), and set to listen for connections with listen().
+Thread creation: Each client connection is handled in a separate thread to allow multiple clients to connect simultaneously.
+Exception handling: Catches exceptions that might occur during socket operations or client communication, ensuring the server continues running smoothly.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Network Sockets: Creation of server and client sockets for communication.
+Connection-Oriented Communication: Establishing connections between server and multiple clients.
+Exception Handling: Managing errors that may arise during socket operations or client communication.
+Data Transfer Mechanisms: Sending and receiving messages (text-based) between clients and server.
+Client-Server Architecture: Implementing a server that handles multiple client connections concurrently.
+"""
