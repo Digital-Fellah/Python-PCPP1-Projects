@@ -1,0 +1,80 @@
+"""
+Bank Account Manager with Class Methods and Static Methods
+
+This program demonstrates a simple bank account management system using Python.
+It includes functionalities for creating accounts, depositing funds, withdrawing funds,
+and calculating interest using both class methods and static methods.
+
+"""
+
+class BankAccount:
+    # Class variable to keep track of the number of accounts created
+    num_accounts = 0
+    
+    def __init__(self, owner, balance=0.0):
+        self.owner = owner    # Instance variable for account owner
+        self.balance = balance    # Instance variable for account balance
+        BankAccount.num_accounts += 1    # Incrementing the number of accounts
+    
+    def deposit(self, amount):
+        """ Method to deposit funds into the account """
+        self.balance += amount    # Adding the deposited amount to the balance
+        print(f"Deposited {amount} into {self.owner}'s account. New balance is {self.balance}.")
+    
+    def withdraw(self, amount):
+        """ Method to withdraw funds from the account """
+        if amount <= self.balance:
+            self.balance -= amount    # Subtracting the withdrawn amount from the balance
+            print(f"Withdrew {amount} from {self.owner}'s account. New balance is {self.balance}.")
+        else:
+            print(f"Insufficient funds in {self.owner}'s account. Current balance is {self.balance}.")
+    
+    @classmethod
+    def display_num_accounts(cls):
+        """ Class method to display the number of accounts created """
+        print(f"Number of accounts created: {cls.num_accounts}")
+    
+    @staticmethod
+    def calculate_interest(balance, interest_rate):
+        """ Static method to calculate interest based on balance and interest rate """
+        return balance * (interest_rate / 100.0)
+
+
+# Example usage:
+if __name__ == "__main__":
+    # Creating two bank accounts
+    acc1 = BankAccount("Alice", 1000.0)
+    acc2 = BankAccount("Bob", 500.0)
+    
+    # Depositing and withdrawing funds
+    acc1.deposit(500.0)
+    acc2.withdraw(200.0)
+    
+    # Displaying the number of accounts created
+    BankAccount.display_num_accounts()
+    
+    # Calculating interest using static method
+    interest_acc1 = BankAccount.calculate_interest(acc1.balance, 1.5)
+    print(f"Interest for {acc1.owner}'s account: {interest_acc1}")
+
+
+"""
+EXPLANATION OF THE CODE
+
+The BankAccount class models a bank account with an owner and balance.
+num_accounts is a class variable that keeps track of the number of accounts created.
+The __init__() method initializes an account with an owner and optionally a starting balance.
+deposit(amount) and withdraw(amount) methods manage funds in the account, updating the balance accordingly.
+display_num_accounts() is a class method that prints the total number of accounts created.
+calculate_interest(balance, interest_rate) is a static method that computes interest based on the balance and interest rate.
+Example usage demonstrates creating accounts, depositing and withdrawing funds, displaying the number of accounts, and calculating interest.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Class methods (@classmethod, cls parameter)
+Static methods (@staticmethod)
+Class vs. static methods
+"""
