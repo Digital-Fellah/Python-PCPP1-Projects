@@ -1,0 +1,80 @@
+# To-Do List Application
+# This program allows users to manage their tasks by adding, deleting, and marking tasks as completed.
+
+import tkinter as tk
+from tkinter import messagebox
+
+# Function to add a new task
+def add_task():
+    task = task_entry.get()  # Retrieve task from entry widget
+    if task:  # Check if task entry is not empty
+        task_listbox.insert(tk.END, task)  # Insert task into listbox
+        task_entry.delete(0, tk.END)  # Clear task entry after adding
+    else:
+        messagebox.showwarning("Warning", "Please enter a task!")  # Show warning if task entry is empty
+
+# Function to remove a selected task
+def remove_task():
+    try:
+        selected_task_index = task_listbox.curselection()[0]  # Get index of selected task
+        task_listbox.delete(selected_task_index)  # Delete selected task from listbox
+    except IndexError:
+        messagebox.showwarning("Warning", "Please select a task to delete!")  # Show warning if no task is selected
+
+# Function to mark a task as completed (strike-through style)
+def complete_task():
+    try:
+        selected_task_index = task_listbox.curselection()[0]  # Get index of selected task
+        task = task_listbox.get(selected_task_index)  # Get task text
+        if task.startswith("~"):  # Check if task is already completed
+            task = task[1:]  # Remove ~ prefix (uncomplete the task)
+        else:
+            task = "~" + task  # Add ~ prefix (complete the task)
+        task_listbox.delete(selected_task_index)  # Delete old task
+        task_listbox.insert(selected_task_index, task)  # Insert updated task
+    except IndexError:
+        messagebox.showwarning("Warning", "Please select a task to mark as complete!")  # Show warning if no task is selected
+
+# Create main window
+root = tk.Tk()
+root.title("To-Do List")
+
+# Create widgets
+task_entry = tk.Entry(root, width=50)
+task_entry.grid(row=0, column=0, padx=5, pady=10)
+
+add_button = tk.Button(root, text="Add Task", command=add_task)
+add_button.grid(row=0, column=1, padx=5, pady=10)
+
+remove_button = tk.Button(root, text="Remove Task", command=remove_task)
+remove_button.grid(row=1, column=1, padx=5, pady=10)
+
+complete_button = tk.Button(root, text="Complete Task", command=complete_task)
+complete_button.grid(row=2, column=1, padx=5, pady=10)
+
+task_listbox = tk.Listbox(root, width=50, height=10)
+task_listbox.grid(row=1, column=0, rowspan=2, padx=5, pady=10)
+
+# Start main loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The script begins by importing necessary modules (tkinter and messagebox).
+Functions (add_task, remove_task, complete_task) are defined to handle adding tasks, removing tasks, and marking tasks as complete.
+Widgets (Entry, Button, Listbox) are created and positioned using grid layout within the main window (Tk()).
+Event handlers (command attribute of buttons) are used to bind functions to button clicks.
+The main event loop (mainloop()) is started to keep the GUI running and responsive.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Widgets (Entry, Button, Listbox): Used for inputting tasks, adding buttons for actions, and displaying tasks.
+Event handling (callbacks): Functions (add_task, remove_task, complete_task) are called upon button clicks.
+Managing lists (Listbox operations): Adding, deleting, and updating tasks in the Listbox.
+Data persistence (file handling): Not directly implemented in this example, but could be extended to save tasks to a file for persistent storage.
+"""
