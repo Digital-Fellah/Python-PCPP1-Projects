@@ -1,0 +1,81 @@
+# Temperature Converter GUI Application
+# This program converts temperatures between Celsius and Fahrenheit.
+
+import tkinter as tk
+from tkinter import messagebox
+
+# Function to convert Celsius to Fahrenheit
+def celsius_to_fahrenheit(celsius):
+    return celsius * 9/5 + 32
+
+# Function to convert Fahrenheit to Celsius
+def fahrenheit_to_celsius(fahrenheit):
+    return (fahrenheit - 32) * 5/9
+
+# Function to handle conversion button click
+def convert_temperature():
+    try:
+        temperature = float(entry_temperature.get())  # Get temperature value from Entry widget
+        if var_conversion_mode.get() == 1:  # Celsius to Fahrenheit
+            result = celsius_to_fahrenheit(temperature)
+            lbl_result.config(text=f"{temperature} \u2103 = {result:.2f} \u2109")
+        elif var_conversion_mode.get() == 2:  # Fahrenheit to Celsius
+            result = fahrenheit_to_celsius(temperature)
+            lbl_result.config(text=f"{temperature} \u2109 = {result:.2f} \u2103")
+    except ValueError:
+        messagebox.showerror("Error", "Invalid input. Please enter a valid number.")
+
+# Main GUI window
+root = tk.Tk()
+root.title("Temperature Converter")
+
+# Temperature input field
+lbl_temperature = tk.Label(root, text="Enter temperature:")
+lbl_temperature.grid(row=0, column=0, padx=10, pady=10)
+
+entry_temperature = tk.Entry(root, width=10)
+entry_temperature.grid(row=0, column=1, padx=10, pady=10)
+
+# Conversion mode selection (Celsius to Fahrenheit or vice versa)
+var_conversion_mode = tk.IntVar()
+
+rad_celsius_to_fahrenheit = tk.Radiobutton(root, text="Celsius to Fahrenheit", variable=var_conversion_mode, value=1)
+rad_celsius_to_fahrenheit.grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
+
+rad_fahrenheit_to_celsius = tk.Radiobutton(root, text="Fahrenheit to Celsius", variable=var_conversion_mode, value=2)
+rad_fahrenheit_to_celsius.grid(row=2, column=0, padx=10, pady=5, sticky=tk.W)
+
+# Conversion button
+btn_convert = tk.Button(root, text="Convert", command=convert_temperature)
+btn_convert.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+
+# Result display label
+lbl_result = tk.Label(root, text="", font=("Arial", 12, "bold"))
+lbl_result.grid(row=4, column=0, columnspan=2, padx=10, pady=10)
+
+# Start the GUI event loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Import the necessary modules (tkinter for GUI, messagebox for error handling).
+Define functions for temperature conversion (celsius_to_fahrenheit, fahrenheit_to_celsius).
+Define convert_temperature function to handle button click and display results.
+Create main Tk window (root) and set title.
+Create widgets: Labels (lbl_temperature, lbl_result), Entry (entry_temperature), RadioButtons (rad_celsius_to_fahrenheit, rad_fahrenheit_to_celsius), Button (btn_convert).
+Layout widgets using grid method to arrange them in rows and columns.
+Start the GUI main event loop (mainloop()).
+"""
+
+
+"""
+NOTIONS COVERED
+
+Widgets (Label, Entry, Radiobutton, Button): Used for user interface elements.
+Event handling (button click): command parameter in Button widget to trigger convert_temperature function.
+Input validation (try-except block): Handles invalid input gracefully with ValueError.
+Displaying results (Label): Updates lbl_result with converted temperature.
+Temperature conversion functions (celsius_to_fahrenheit, fahrenheit_to_celsius): Converts temperature values based on user selection.
+"""
