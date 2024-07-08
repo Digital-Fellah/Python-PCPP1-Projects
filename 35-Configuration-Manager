@@ -1,0 +1,75 @@
+# Configuration Manager
+# This Python script manages application configurations stored in .ini files.
+
+import configparser  # Import the configparser module for working with .ini files
+
+# Define a function to read and print all configurations from a specified .ini file
+def read_config_file(file_name):
+    config = configparser.ConfigParser()  # Create a ConfigParser object
+    config.read(file_name)  # Read the specified .ini file
+
+    # Iterate through all sections in the .ini file
+    for section in config.sections():
+        print(f"[{section}]")  # Print section name in square brackets
+        for key, value in config.items(section):
+            print(f"{key} = {value}")  # Print key-value pairs in each section
+        print()  # Print an empty line for readability
+
+# Define a function to create or update configurations in a specified .ini file
+def write_config_file(file_name):
+    config = configparser.ConfigParser()  # Create a ConfigParser object
+
+    # Set sample configurations
+    config['Database'] = {'host': 'localhost', 'port': '5432', 'database': 'mydb'}
+    config['API'] = {'key': 'abcd1234', 'secret': 'xyz9876'}
+
+    # Write the configurations to the specified .ini file
+    with open(file_name, 'w') as configfile:
+        config.write(configfile)
+
+# Main function to demonstrate usage
+def main():
+    file_name = 'app_config.ini'  # Specify the .ini file name
+
+    # Display existing configurations if the file exists
+    print("Existing Configurations:")
+    try:
+        read_config_file(file_name)
+    except FileNotFoundError:
+        print("No existing configurations found.")
+
+    print("\nUpdating Configurations...")
+
+    # Write new configurations to the .ini file
+    write_config_file(file_name)
+    print("New configurations written successfully.")
+
+    print("\nUpdated Configurations:")
+    # Display updated configurations
+    read_config_file(file_name)
+
+# Run the main function if this script is executed directly
+if __name__ == "__main__":
+    main()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Import the configparser module to work with .ini files.
+Define read_config_file(file_name) function to read and print all configurations from a specified .ini file.
+Define write_config_file(file_name) function to create or update configurations in a specified .ini file.
+In main() function:
+Specify the .ini file name (file_name).
+Display existing configurations if the file exists; otherwise, notify that no configurations are found.
+Update configurations using write_config_file(file_name).
+Display updated configurations using read_config_file(file_name).
+"""
+
+
+"""
+NOTIONS COVERED
+
+Parsing and creating configuration files using the ConfigParser object.
+Interpolating values in .ini files.
+"""
