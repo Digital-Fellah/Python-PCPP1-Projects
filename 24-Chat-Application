@@ -1,0 +1,62 @@
+# Simple Chat Application
+# This program allows two users to chat with each other in real-time using a GUI interface.
+
+import tkinter as tk
+from tkinter import scrolledtext
+
+# Function to send a message
+def send_message():
+    message = entry_message.get()  # Get the message from the Entry widget
+    if message:  # If message is not empty
+        chat_history.config(state=tk.NORMAL)  # Allow editing of the chat history
+        chat_history.insert(tk.END, "You: " + message + "\n")  # Append message to chat history
+        chat_history.config(state=tk.DISABLED)  # Disable editing of the chat history
+        entry_message.delete(0, tk.END)  # Clear the Entry widget after sending message
+
+# Create the main window
+root = tk.Tk()
+root.title("Simple Chat Application")
+
+# Create a scrolled text widget for displaying chat history
+chat_history = scrolledtext.ScrolledText(root, width=40, height=10)
+chat_history.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+chat_history.config(state=tk.DISABLED)  # Initially disable editing of the chat history
+
+# Create an Entry widget for typing messages
+entry_message = tk.Entry(root, width=30)
+entry_message.grid(row=1, column=0, padx=10, pady=10)
+
+# Create a button to send messages
+send_button = tk.Button(root, text="Send", width=10, command=send_message)
+send_button.grid(row=1, column=1, padx=10, pady=10)
+
+# Start the Tkinter main loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Imports necessary libraries (tkinter for GUI, scrolledtext for scrolled text widget).
+Defines send_message() function to handle sending messages:
+Retrieves message from the entry_message widget.
+Appends "You: " + message to chat_history.
+Clears entry_message after sending the message.
+Creates the main Tk() window with title "Simple Chat Application".
+Initializes chat_history as a ScrolledText widget to display chat messages.
+Initializes entry_message as an Entry widget for typing messages.
+Initializes send_button as a Button widget to send messages.
+Configures the GUI layout using grid positioning (grid() method).
+Starts the Tkinter event loop (mainloop()) to display the GUI and handle events.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Widgets (ScrolledText, Entry, Button)
+Event handling (command parameter in Button, function definition for send_message())
+Real-time updates (updating chat_history dynamically)
+Basic networking (simulated by message sending and displaying)
+User interface for messaging
+"""
