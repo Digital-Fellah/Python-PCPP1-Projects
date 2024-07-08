@@ -1,0 +1,109 @@
+# Fantasy Character Database
+# This program allows users to manage a database of fantasy characters.
+# Users can add, view, update, and delete character information using SQLite.
+
+import sqlite3
+
+# Connect to SQLite database (or create if not exists)
+conn = sqlite3.connect('fantasy_characters.db')
+
+# Create a cursor object to execute SQL queries
+cursor = conn.cursor()
+
+# Create a table to store character information if not already exists
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS characters (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        race TEXT NOT NULL,
+        class TEXT NOT NULL,
+        abilities TEXT
+    )
+''')
+
+# Function to add a new character to the database
+def add_character(name, race, char_class, abilities=None):
+    if abilities is None:
+        abilities = ''  # Default to empty string if no abilities provided
+    cursor.execute('''
+        INSERT INTO characters (name, race, class, abilities)
+        VALUES (?, ?, ?, ?)
+    ''', (name, race, char_class, abilities))
+    conn.commit()  # Commit the transaction to save changes to the database
+
+# Function to retrieve all characters from the database
+def view_characters():
+    cursor.execute('SELECT * FROM characters')
+    characters = cursor.fetchall()
+    for character in characters:
+        print(character)
+
+# Function to update character information based on ID
+def update_character(id, name=None, race=None, char_class=None, abilities=None):
+    update_fields = []
+    update_values = []
+    if name:
+        update_fields.append('name = ?')
+        update_values.append(name)
+    if race:
+        update_fields.append('race = ?')
+        update_values.append(race)
+    if char_class:
+        update_fields.append('class = ?')
+        update_values.append(char_class)
+    if abilities:
+        update_fields.append('abilities = ?')
+        update_values.append(abilities)
+    
+    update_values.append(id)  # Add the ID to the end for WHERE clause
+    update_query = 'UPDATE characters SET ' + ', '.join(update_fields) + ' WHERE id = ?'
+    cursor.execute(update_query, update_values)
+    conn.commit()
+
+# Function to delete a character from the database based on ID
+def delete_character(id):
+    cursor.execute('DELETE FROM characters WHERE id = ?', (id,))
+    conn.commit()
+
+# Example usage:
+# Add a new character
+add_character('Gandalf', 'Wizard', 'Human', 'Magic, Wisdom')
+
+# View all characters
+print("Characters in the database:")
+view_characters()
+
+# Update character information (e.g., change race)
+update_character(1, race='Elf')
+
+# Delete a character (e.g., based on ID)
+delete_character(1)
+
+# Close the cursor and connection to the database
+cursor.close()
+conn.close()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Database Connection and Cursor: Establishes a connection to an SQLite database and creates a cursor object for executing SQL queries.
+Table Creation: Defines a table characters if it does not exist, with fields id, name, race, class, and abilities.
+add_character Function: Inserts a new character into the characters table, allowing specification of name, race, class, and abilities.
+view_characters Function: Retrieves all characters from the characters table and prints them.
+update_character Function: Updates character information (name, race, class, abilities) based on the character's ID.
+delete_character Function: Deletes a character from the characters table based on the character's ID.
+Example Usage: Demonstrates how to add a character, view all characters, update character information, and delete a character.
+Closing Connection: Properly closes the cursor and connection to the database to ensure data integrity and resource management.
+"""
+
+
+"""
+NOTIONS COVERED
+
+SQLite Module: Creating and closing database connections (connect, close methods).
+Database Operations: Creating tables, inserting, reading, updating, and deleting data.
+Transactions: Demarcation of transactions (commit method).
+Cursor Methods: execute, fetchall.
+SQL Statements: Basic SQL statements (INSERT INTO, SELECT, UPDATE, DELETE).
+"""
