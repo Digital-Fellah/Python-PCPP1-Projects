@@ -1,0 +1,91 @@
+# File Explorer GUI Application
+# This program creates a simple file explorer using tkinter in Python.
+
+import os
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter import filedialog
+
+# Function to populate the Treeview widget with files and directories
+def populate_tree(tree, path):
+    tree.delete(*tree.get_children())  # Clear existing items in the Treeview
+    try:
+        for item in os.listdir(path):
+            if os.path.isdir(os.path.join(path, item)):
+                tree.insert("", "end", text=item, values=[os.path.join(path, item)], open=False)
+            else:
+                tree.insert("", "end", text=item, values=[os.path.join(path, item)])
+    except OSError:
+        messagebox.showerror("Error", "Failed to open directory")
+        
+# Function to handle double-click event on Treeview items
+def on_double_click(event):
+    item = tree.item(tree.focus())['values'][0]
+    if os.path.isdir(item):
+        populate_tree(tree, item)
+    else:
+        try:
+            os.startfile(item)
+        except OSError:
+            messagebox.showerror("Error", "Failed to open file")
+
+# Function to handle 'Open' button click
+def open_directory():
+    chosen_dir = filedialog.askdirectory()
+    if chosen_dir:
+        populate_tree(tree, chosen_dir)
+
+# Create main window
+root = tk.Tk()
+root.title("File Explorer")
+
+# Create a Treeview widget
+tree = ttk.Treeview(root)
+tree.pack(expand=True, fill=tk.BOTH)
+
+# Add a scrollbar to the Treeview
+scrollbar = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+tree.configure(yscrollcommand=scrollbar.set)
+
+# Populate Treeview with current directory
+populate_tree(tree, os.getcwd())
+
+# Bind double-click event to Treeview items
+tree.bind("<Double-1>", on_double_click)
+
+# Create 'Open' button
+open_button = tk.Button(root, text="Open Directory", command=open_directory)
+open_button.pack()
+
+# Run the main event loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Imports necessary libraries (os, tkinter, ttk, messagebox, filedialog).
+Defines populate_tree() function to populate the Treeview widget with files and directories from a given path.
+Defines on_double_click() function to handle double-click events on Treeview items, opening directories and files accordingly.
+Defines open_directory() function to open a file dialog and populate the Treeview with the selected directory.
+Creates the main Tk() window and sets its title.
+Creates a Treeview widget to display files and directories.
+Adds a vertical scrollbar to the Treeview.
+Populates the Treeview with files and directories from the current working directory.
+Binds double-click event to Treeview items to on_double_click() function.
+Creates an 'Open Directory' button that triggers the open_directory() function.
+Starts the main event loop (mainloop()) for the GUI application.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Widgets (Treeview, Scrollbar, Button)
+File operations (browsing directories, file management)
+Event handling (opening files)
+Organizing files (Treeview)
+Using filedialog for directory selection
+"""
