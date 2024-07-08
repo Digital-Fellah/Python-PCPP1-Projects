@@ -1,0 +1,79 @@
+# Weather App using WeatherBit API
+import requests
+import tkinter as tk
+from tkinter import messagebox
+
+# Function to fetch weather data from WeatherBit API
+def get_weather():
+    # API key for WeatherBit (replace with your own API key)
+    api_key = 'your_api_key_here'
+    # Base URL for WeatherBit API
+    base_url = 'https://api.weatherbit.io/v2.0/current'
+    # City entered by the user (assuming user input via entry box)
+    city = city_entry.get()
+    # Parameters for API request
+    params = {
+        'city': city,
+        'key': api_key
+    }
+    try:
+        # Sending GET request to WeatherBit API
+        response = requests.get(base_url, params=params)
+        # Converting response to JSON format
+        weather_data = response.json()
+        # Extracting relevant weather information
+        temperature = weather_data['data'][0]['temp']
+        description = weather_data['data'][0]['weather']['description']
+        # Updating labels with weather information
+        temp_label.config(text=f'Temperature: {temperature}°C')
+        desc_label.config(text=f'Description: {description}')
+    except Exception as e:
+        # Error handling in case of API request failure
+        messagebox.showerror('Error', f'Failed to fetch data: {str(e)}')
+
+# Creating main application window
+root = tk.Tk()
+root.title('Weather App')
+
+# Entry box for user to input city
+city_entry = tk.Entry(root, width=30)
+city_entry.grid(row=0, column=0, padx=10, pady=10)
+
+# Button to fetch weather
+search_button = tk.Button(root, text='Search', command=get_weather)
+search_button.grid(row=0, column=1, padx=10, pady=10)
+
+# Labels to display weather information
+temp_label = tk.Label(root, text='Temperature: ')
+temp_label.grid(row=1, column=0, padx=10, pady=5)
+
+desc_label = tk.Label(root, text='Description: ')
+desc_label.grid(row=2, column=0, padx=10, pady=5)
+
+# Running the main loop of the application
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Imports necessary libraries (requests for API requests, tkinter for GUI).
+Defines get_weather() function to fetch weather data using the WeatherBit API.
+Retrieves user input (city name) from an Entry widget.
+Constructs API request URL with API key and city name parameters.
+Sends GET request to WeatherBit API and handles JSON response.
+Updates GUI (Label widgets) with fetched weather information.
+Includes error handling using try-except block and displays error message using messagebox.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Creating main window (Tk(), mainloop(), title() methods)
+Adding widgets to the window (Entry, Button, Label)
+Handling events (button click to fetch weather)
+API integration (fetching weather data from WeatherBit API)
+Displaying data dynamically (Label updates based on API response)
+Error handling (displaying error message if API request fails)
+"""
