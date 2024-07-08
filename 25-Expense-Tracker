@@ -1,0 +1,87 @@
+# Expense Tracker
+# This program allows users to track their expenses and categorize them.
+
+import tkinter as tk
+from tkinter import messagebox
+
+# Function to add expense to the listbox
+def add_expense():
+    expense = expense_entry.get()  # Get the expense description from the entry widget
+    amount = amount_entry.get()    # Get the amount from the entry widget
+
+    # Validate inputs
+    if not expense or not amount:
+        messagebox.showwarning("Warning", "Please enter both expense and amount!")
+        return
+
+    try:
+        float(amount)  # Check if amount is a valid float number
+    except ValueError:
+        messagebox.showwarning("Warning", "Please enter a valid number for amount!")
+        return
+
+    # Add expense to the listbox
+    expense_listbox.insert(tk.END, f"{expense}: ${amount}")
+
+    # Clear the entry widgets
+    expense_entry.delete(0, tk.END)
+    amount_entry.delete(0, tk.END)
+
+# Create main window
+root = tk.Tk()
+root.title("Expense Tracker")
+
+# Labels
+expense_label = tk.Label(root, text="Expense:")
+expense_label.grid(row=0, column=0, padx=10, pady=10)
+
+amount_label = tk.Label(root, text="Amount ($):")
+amount_label.grid(row=1, column=0, padx=10, pady=10)
+
+# Entry widgets
+expense_entry = tk.Entry(root, width=30)
+expense_entry.grid(row=0, column=1, padx=10, pady=10)
+
+amount_entry = tk.Entry(root, width=30)
+amount_entry.grid(row=1, column=1, padx=10, pady=10)
+
+# Button to add expense
+add_button = tk.Button(root, text="Add Expense", command=add_expense)
+add_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+# Listbox to display expenses
+expense_listbox = tk.Listbox(root, width=50)
+expense_listbox.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+
+# Scrollbar for listbox
+scrollbar = tk.Scrollbar(root, orient=tk.VERTICAL)
+scrollbar.grid(row=3, column=2, sticky=tk.N+tk.S)
+expense_listbox.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=expense_listbox.yview)
+
+# Start the main tkinter event loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The program starts by importing the necessary modules (tkinter for GUI components and messagebox for displaying warnings).
+It defines a function add_expense() to handle adding expenses to the listbox.
+The main window (root) is created with a title "Expense Tracker".
+Labels (expense_label and amount_label) and entry widgets (expense_entry and amount_entry) are created to input expense details.
+A button (add_button) is added to trigger the addition of expenses to the listbox.
+A Listbox (expense_listbox) is used to display added expenses, and a Scrollbar (scrollbar) is added for scrolling through the list.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Creating the main window (Tk(), mainloop(), title method)
+Adding widgets to the window (Label, Entry, Button, Listbox, Scrollbar)
+Event handling (Button click event to add expenses)
+Checking the validity of user input and handling errors (input validation using messagebox)
+Working with Listbox and Scrollbar
+Using basic geometry managers (grid method for layout)
+"""
