@@ -1,0 +1,58 @@
+# Weather Dashboard with REST API Integration
+# This program fetches weather data from WeatherBit API and displays it in a simple dashboard.
+
+import requests  # Importing the requests module for making HTTP requests
+
+def fetch_weather_data(city):
+    api_key = 'your_api_key_here'  # Replace with your WeatherBit API key
+    url = f'https://api.weatherbit.io/v2.0/current?city={city}&key={api_key}'  # API endpoint for current weather
+    try:
+        response = requests.get(url)  # Sending a GET request to the API
+        response.raise_for_status()  # Raise an exception for bad responses (4xx or 5xx)
+        data = response.json()  # Parsing the JSON response into Python dictionary
+        return data  # Returning the weather data dictionary
+    except requests.exceptions.RequestException as e:
+        print(f'Error fetching data: {e}')  # Handling exceptions related to network or API errors
+        return None
+
+def display_weather(data):
+    if data:
+        temp = data['data'][0]['temp']  # Extracting temperature from the API response
+        desc = data['data'][0]['weather']['description']  # Extracting weather description
+        print(f'Current temperature: {temp}°C')
+        print(f'Weather description: {desc}')
+    else:
+        print('No data available.')  # Handling case where data retrieval fails
+
+# Example usage:
+city_name = 'London'
+weather_data = fetch_weather_data(city_name)
+display_weather(weather_data)
+
+
+"""
+EXPLANATION OF THE CODE
+
+Import requests module: Enables making HTTP requests to the API.
+fetch_weather_data(city):
+Constructs the API URL with the city name and API key.
+Sends a GET request to the WeatherBit API.
+Handles exceptions for network or API errors.
+Returns the JSON response as a Python dictionary.
+display_weather(data):
+Checks if data is available.
+Extracts temperature and weather description from the JSON data.
+Prints the current temperature and weather description.
+Handles cases where data retrieval fails.
+"""
+
+
+"""
+NOTIONS COVERED
+
+REST: Interacting with the WeatherBit API using HTTP methods (GET).
+HTTP Methods: Sending GET requests to fetch weather data.
+JSON: Parsing JSON responses from the API (response.json()).
+Client-Server Communication: Making client-side requests to a remote server (WeatherBit API).
+Response Handling: Checking and displaying server responses, handling different HTTP status codes.
+"""
