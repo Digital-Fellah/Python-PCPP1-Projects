@@ -1,0 +1,105 @@
+# Quest Tracker with CSV
+# This program allows users to track quests using a CSV file as the storage format.
+
+import csv
+
+# Function to read quests from CSV file into a list of dictionaries
+def read_quests(filename):
+    quests = []
+    try:
+        with open(filename, 'r', newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                quests.append(row)
+    except FileNotFoundError:
+        print(f"Error: {filename} not found. Creating a new file.")
+        with open(filename, 'w', newline='') as file:
+            fieldnames = ['name', 'description', 'status']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+    return quests
+
+# Function to save quests list back to CSV file
+def save_quests(filename, quests):
+    with open(filename, 'w', newline='') as file:
+        fieldnames = ['name', 'description', 'status']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(quests)
+
+# Function to add a new quest to the tracker
+def add_quest(quests, name, description):
+    new_quest = {'name': name, 'description': description, 'status': 'ongoing'}
+    quests.append(new_quest)
+    return quests
+
+# Function to update the status of a quest
+def update_quest_status(quests, name, new_status):
+    for quest in quests:
+        if quest['name'] == name:
+            quest['status'] = new_status
+            break
+
+# Function to display all quests
+def display_quests(quests):
+    print("Current Quests:")
+    for quest in quests:
+        print(f"Name: {quest['name']}, Description: {quest['description']}, Status: {quest['status']}")
+    print()
+
+# Main function
+def main():
+    filename = 'quests.csv'
+    quests = read_quests(filename)
+
+    while True:
+        print("Quest Tracker Menu:")
+        print("1. Add a new quest")
+        print("2. Update quest status")
+        print("3. Display all quests")
+        print("4. Save and exit")
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == '1':
+            name = input("Enter quest name: ")
+            description = input("Enter quest description: ")
+            quests = add_quest(quests, name, description)
+        elif choice == '2':
+            name = input("Enter quest name to update status: ")
+            new_status = input("Enter new status (ongoing/completed/failed): ")
+            update_quest_status(quests, name, new_status)
+        elif choice == '3':
+            display_quests(quests)
+        elif choice == '4':
+            save_quests(filename, quests)
+            print("Quests saved successfully. Exiting program.")
+            break
+        else:
+            print("Invalid choice. Please enter a number from 1 to 4.")
+
+if __name__ == "__main__":
+    main()
+
+
+"""
+EXPLANATION OF THE CODE
+
+The program starts by importing the csv module for handling CSV files.
+It defines functions for reading quests from a CSV file, saving quests to a CSV file, adding a new quest, updating the status of a quest, and displaying all quests.
+In the main() function:
+It initializes by reading existing quests from a CSV file (quests.csv).
+It displays a menu for users to add new quests, update quest statuses, display all quests, or save and exit.
+It handles user input and calls corresponding functions (add_quest, update_quest_status, display_quests, save_quests) based on user choices.
+The program loops until the user chooses to save and exit.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Reading and writing CSV data using functions and classes (csv.DictReader, csv.DictWriter).
+Managing data (quests) using dictionaries.
+User interaction through a command-line menu.
+Handling user input and validation (while loop and if-elif-else statements).
+Basic file handling (open function for file operations).
+"""
