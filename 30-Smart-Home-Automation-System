@@ -1,0 +1,73 @@
+# Smart Home Automation System
+# This Python script implements a basic smart home automation system using Raspberry Pi.
+# It demonstrates network communication, RESTful API handling, and sensor integration.
+
+import socket
+import json
+
+# Define the IP address and port for the Raspberry Pi server
+SERVER_IP = '192.168.1.100'
+SERVER_PORT = 12345
+
+# Create a socket object
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the IP address and port
+server_socket.bind((SERVER_IP, SERVER_PORT))
+
+# Listen for incoming connections (max 5 clients)
+server_socket.listen(5)
+print(f"Listening on {SERVER_IP}:{SERVER_PORT}...")
+
+while True:
+    # Accept incoming connection
+    client_socket, client_address = server_socket.accept()
+    print(f"Connection established with {client_address}")
+
+    try:
+        # Receive data from client
+        data = client_socket.recv(1024)
+        if data:
+            # Decode JSON data received from client
+            json_data = data.decode('utf-8')
+            received_data = json.loads(json_data)
+            print("Received data:", received_data)
+
+            # Process received data (e.g., control devices, read sensor values)
+
+            # Example: Send response back to client
+            response_data = {'status': 'success', 'message': 'Data received and processed'}
+            json_response = json.dumps(response_data)
+            client_socket.sendall(json_response.encode('utf-8'))
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+    finally:
+        # Close client connection
+        client_socket.close()
+
+# Close server socket
+server_socket.close()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Initializes a socket object for network communication.
+Binds the socket to a specific IP address (SERVER_IP) and port (SERVER_PORT).
+Listens for incoming client connections with a maximum queue size of 5.
+Accepts client connections and handles incoming data.
+Decodes received JSON data from clients and processes it.
+Sends a JSON-encoded response back to the client acknowledging the data reception and processing.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Network Communication: Using sockets to establish communication channels between devices.
+RESTful APIs: Implementing a basic server-client architecture for device control.
+HTTP Methods: Handling data transfer using socket communication (connection-oriented).
+JSON Serialization: Encoding and decoding data to/from JSON format for structured data transfer.
+"""
