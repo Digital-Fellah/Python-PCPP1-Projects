@@ -1,0 +1,97 @@
+# Image Viewer GUI Application
+# This application allows users to browse and view images from a specified directory.
+
+import tkinter as tk
+from PIL import Image, ImageTk
+import os
+
+class ImageViewer:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Image Viewer")  # Set the title of the main window
+        
+        self.image_list = []  # List to store loaded images
+        self.current_index = 0  # Index to track the current image
+        
+        # Create a Frame to hold the image
+        self.image_frame = tk.Frame(self.root, bd=2, relief=tk.SUNKEN)
+        self.image_frame.pack(pady=10)
+        
+        # Display image placeholder
+        self.image_label = tk.Label(self.image_frame)
+        self.image_label.pack()
+        
+        # Create navigation buttons
+        nav_frame = tk.Frame(self.root)
+        nav_frame.pack(pady=10)
+        
+        self.prev_button = tk.Button(nav_frame, text="Previous", command=self.prev_image)
+        self.prev_button.grid(row=0, column=0, padx=20)
+        
+        self.next_button = tk.Button(nav_frame, text="Next", command=self.next_image)
+        self.next_button.grid(row=0, column=1, padx=20)
+        
+        # Load images from a directory
+        self.load_images_from_directory("images")  # Replace "images" with your directory path
+    
+    def load_images_from_directory(self, directory):
+        # Get all files from the directory
+        file_list = os.listdir(directory)
+        
+        # Filter only image files (assuming all are supported by PIL)
+        image_files = [file for file in file_list if file.endswith((".jpg", ".jpeg", ".png", ".gif"))]
+        
+        # Load each image and store in self.image_list
+        for file in image_files:
+            image_path = os.path.join(directory, file)
+            image = Image.open(image_path)
+            photo = ImageTk.PhotoImage(image)
+            self.image_list.append(photo)
+        
+        # Display the first image
+        self.show_image(0)
+    
+    def show_image(self, index):
+        # Update the image_label with the new image
+        self.image_label.config(image=self.image_list[index])
+        self.image_label.image = self.image_list[index]  # Keep a reference to avoid garbage collection
+        self.current_index = index
+    
+    def prev_image(self):
+        # Show the previous image
+        if self.current_index > 0:
+            self.show_image(self.current_index - 1)
+    
+    def next_image(self):
+        # Show the next image
+        if self.current_index < len(self.image_list) - 1:
+            self.show_image(self.current_index + 1)
+
+# Main program
+if __name__ == "__main__":
+    root = tk.Tk()  # Create the main window
+    app = ImageViewer(root)  # Initialize the ImageViewer application
+    root.mainloop()  # Run the Tkinter event loop
+
+
+"""
+EXPLANATION OF THE CODE
+
+Imports necessary libraries: tkinter, PIL, and os.
+Defines a class ImageViewer for the application.
+Initializes the main window (Tk()), sets the title, and creates necessary widgets (Frame, Label, Button).
+Implements methods to load images from a specified directory (load_images_from_directory), display images (show_image), and navigate through images (prev_image, next_image).
+Utilizes PIL (Pillow) for image handling and tkinter for GUI components.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Creating the main window (Tk()).
+Using widgets (Frame, Label, Button).
+Event handling (callbacks for Button clicks).
+Displaying images (PIL and ImageTk for image loading and display).
+Navigating through images (prev_image, next_image methods).
+Basic error handling (checking image index boundaries).
+"""
