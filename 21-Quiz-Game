@@ -1,0 +1,87 @@
+# Quiz Game GUI Application
+
+import tkinter as tk
+from tkinter import messagebox
+
+# Initialize the main application window
+root = tk.Tk()
+root.title("Quiz Game")
+
+# Define quiz questions and answers
+questions = [
+    "What is the capital of France?",
+    "Which planet is known as the Red Planet?",
+    "Who painted the Mona Lisa?"
+]
+answers = [
+    ["Paris", "Berlin", "London", "Madrid"],
+    ["Mars", "Jupiter", "Saturn", "Earth"],
+    ["Leonardo da Vinci", "Michelangelo", "Vincent van Gogh", "Pablo Picasso"]
+]
+correct_choices = [0, 0, 0]  # Indices of correct answers for each question
+
+# Variables to track current question and score
+current_question = 0
+score = 0
+
+# Function to check the selected answer and proceed to the next question
+def check_answer():
+    global current_question, score
+    selected = var.get()  # Get the index of the selected answer
+    if selected == correct_choices[current_question]:
+        score += 1  # Increment score if the answer is correct
+    current_question += 1  # Move to the next question
+
+    if current_question < len(questions):
+        display_question()  # Display the next question
+    else:
+        messagebox.showinfo("Quiz Complete", f"You scored {score} out of {len(questions)}.")
+        root.destroy()  # Close the application when all questions are answered
+
+# Function to display current question and answer choices
+def display_question():
+    question_label.config(text=questions[current_question])  # Display question
+    for i, choice in enumerate(answer_choices):
+        choice.config(text=answers[current_question][i])  # Display answer choices
+
+# GUI widgets
+question_label = tk.Label(root, text="", padx=20, pady=10, wraplength=400)
+question_label.pack()
+
+var = tk.IntVar()
+answer_choices = []
+for i in range(4):
+    choice = tk.Radiobutton(root, text="", variable=var, value=i, padx=20, pady=5)
+    choice.pack(anchor=tk.W)
+    answer_choices.append(choice)
+
+submit_button = tk.Button(root, text="Submit Answer", command=check_answer, padx=10, pady=5)
+submit_button.pack(pady=10)
+
+# Start the quiz with the first question
+display_question()
+
+# Start the main event loop
+root.mainloop()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Initializes a GUI-based quiz game using tkinter.
+Defines quiz questions, answer choices, and correct answers.
+Displays questions sequentially with multiple-choice options.
+Tracks user selection, calculates score, and progresses through questions.
+Displays final score and closes the application upon completion.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Widgets (Label, Radiobutton, Button)
+Event handling (command in Button)
+Quiz data management (questions, answers)
+Score tracking
+"""
+
