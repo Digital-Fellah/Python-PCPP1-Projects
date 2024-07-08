@@ -1,0 +1,61 @@
+# Application Logger
+# This program demonstrates logging events in an application,
+# using different logging levels, custom log formatting, and multiple handlers.
+
+import logging
+
+# Configure the logger
+logging.basicConfig(
+    level=logging.DEBUG,  # Set the minimum level of logs to display (DEBUG and above)
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Define the format of log messages
+    filename='app.log',  # Specify the log file name
+    filemode='w'  # Set the file mode to 'write' to overwrite the log file each time
+)
+
+# Create a custom handler for console output
+console_handler = logging.StreamHandler()  # Create a handler to output logs to console
+console_handler.setLevel(logging.INFO)  # Set the logging level for console output
+console_formatter = logging.Formatter('%(levelname)s - %(message)s')  # Define the format for console logs
+console_handler.setFormatter(console_formatter)  # Assign the formatter to the console handler
+
+# Add the console handler to the logger
+logging.getLogger('').addHandler(console_handler)
+
+# Log some events
+logging.debug('Debug message')  # Example of a debug-level log
+logging.info('Info message')    # Example of an info-level log
+logging.warning('Warning message')  # Example of a warning-level log
+logging.error('Error message')  # Example of an error-level log
+logging.critical('Critical message')  # Example of a critical-level log
+
+
+"""
+EXPLANATION OF THE CODE
+
+Logger Configuration:
+
+logging.basicConfig(): Sets up basic configuration for the logger.
+level=logging.DEBUG: Defines the minimum level of messages to log.
+format='%(asctime)s - %(levelname)s - %(message)s': Specifies the format of each log message, including timestamp, log level, and message content.
+filename='app.log': Specifies the filename where logs will be saved.
+filemode='w': Sets the file mode to 'write' ('w'), overwriting the log file each time the program runs.
+Custom Console Handler:
+
+console_handler = logging.StreamHandler(): Creates a handler to output logs to the console.
+console_handler.setLevel(logging.INFO): Sets the logging level for console output to INFO.
+console_formatter = logging.Formatter('%(levelname)s - %(message)s'): Defines the format for console logs, showing only log level and message.
+console_handler.setFormatter(console_formatter): Assigns the formatter to the console handler.
+Logging Events:
+
+logging.debug(), logging.info(), logging.warning(), logging.error(), logging.critical(): Logs messages at different levels to demonstrate various types of events that can be logged.
+"""
+
+
+"""
+NOTIONS COVERED
+
+Logging events in applications using Python.
+Working with different levels of logging (DEBUG, INFO, WARNING, ERROR, CRITICAL).
+Using LogRecord attributes (asctime, levelname, message) to create custom log formats.
+Creating custom handlers (StreamHandler for console output) and formatters (Formatter for log formatting).
+"""
