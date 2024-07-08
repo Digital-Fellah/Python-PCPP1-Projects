@@ -1,0 +1,90 @@
+# Welcome to the Python Zen Garden, an interactive experience based on the Zen of Python (PEP 20).
+# This program will guide you through various aphorisms of Python philosophy using simple text-based interactions.
+
+# Import necessary modules
+import random
+import time
+
+# Define a list of aphorisms from the Zen of Python
+zen_aphorisms = [
+    "Beautiful is better than ugly.",
+    "Explicit is better than implicit.",
+    "Simple is better than complex.",
+    "Complex is better than complicated.",
+    "Flat is better than nested.",
+    "Sparse is better than dense.",
+    "Readability counts.",
+    "Special cases aren't special enough to break the rules.",
+    "Although practicality beats purity.",
+    "Errors should never pass silently.",
+    "Unless explicitly silenced.",
+    "In the face of ambiguity, refuse the temptation to guess.",
+    "There should be one-- and preferably only one --obvious way to do it.",
+    "Although that way may not be obvious at first unless you're Dutch.",
+    "Now is better than never.",
+    "Although never is often better than *right* now.",
+    "If the implementation is hard to explain, it's a bad idea.",
+    "If the implementation is easy to explain, it may be a good idea.",
+    "Namespaces are one honking great idea -- let's do more of those!"
+]
+
+# Function to display the aphorisms with a delay for better user experience
+def display_aphorisms():
+    print("Welcome to the Python Zen Garden. Here, you will explore the Zen of Python:")
+    time.sleep(2)
+    for aphorism in zen_aphorisms:
+        print(f"- {aphorism}")
+        time.sleep(2)  # Delay to give users time to read each aphorism
+
+# Function to quiz the user on the aphorisms they have learned
+def zen_quiz():
+    print("\nLet's test your knowledge with a quiz!")
+    score = 0
+    for _ in range(5):
+        correct_aphorism = random.choice(zen_aphorisms)
+        options = random.sample(zen_aphorisms, 3)
+        if correct_aphorism not in options:
+            options[random.randint(0, 2)] = correct_aphorism
+        print(f"\nWhich of the following is part of the Zen of Python?")
+        for i, option in enumerate(options):
+            print(f"{i + 1}. {option}")
+        answer = input("Enter the number of your choice: ")
+        if options[int(answer) - 1] == correct_aphorism:
+            print("Correct!")
+            score += 1
+        else:
+            print(f"Wrong. The correct aphorism is: {correct_aphorism}")
+    print(f"\nYour final score is: {score}/5")
+
+# Main function to run the program
+def main():
+    display_aphorisms()
+    zen_quiz()
+    print("\nThank you for visiting the Python Zen Garden. Remember to always code with the Zen of Python in mind!")
+
+# Call the main function to start the program
+if __name__ == "__main__":
+    main()
+
+
+"""
+EXPLANATION OF THE CODE
+
+Import necessary modules.
+Define a list of aphorisms from the Zen of Python.
+Define a function to display aphorisms with a delay.
+Define a function to quiz the user on the aphorisms.
+Define the main function to run the program.
+Call the main function to start the program.
+"""
+
+
+"""
+NOTIONS COVERED
+
+PEP 20 (The Zen of Python)
+Python philosophy and design principles
+Comments to explain the code to beginners
+Function definitions and usage
+Use of loops, conditional statements, and user input for interactive elements
+"""
