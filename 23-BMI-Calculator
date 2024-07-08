@@ -1,0 +1,94 @@
+# BMI Calculator GUI Application
+# This program calculates Body Mass Index (BMI) based on user input for height and weight.
+
+import tkinter as tk  # Import the tkinter module for GUI components
+from tkinter import messagebox  # Import messagebox for displaying error messages
+
+# Function to calculate BMI
+def calculate_bmi():
+    try:
+        height = float(entry_height.get()) / 100  # Get height in meters from Entry widget and convert to meters
+        weight = float(entry_weight.get())  # Get weight in kilograms from Entry widget
+
+        if height <= 0 or weight <= 0:
+            messagebox.showerror("Error", "Please enter valid values for height and weight.")
+            return
+
+        bmi = weight / (height * height)  # Calculate BMI using the formula: weight / (height * height)
+        label_result.config(text=f"Your BMI: {bmi:.2f}")  # Display the calculated BMI with two decimal places
+
+        # Determine BMI category
+        if bmi < 18.5:
+            label_category.config(text="Underweight", fg="blue")
+        elif bmi < 25:
+            label_category.config(text="Normal weight", fg="green")
+        elif bmi < 30:
+            label_category.config(text="Overweight", fg="orange")
+        else:
+            label_category.config(text="Obesity", fg="red")
+
+    except ValueError:
+        messagebox.showerror("Error", "Please enter valid numeric values for height and weight.")
+
+# Create the main application window
+root = tk.Tk()
+root.title("BMI Calculator")  # Set the title of the window
+
+# Create labels for instructions and results
+label_intro = tk.Label(root, text="Enter your height (cm) and weight (kg) below:")
+label_intro.pack(pady=10)
+
+label_height = tk.Label(root, text="Height (cm):")
+label_height.pack()
+
+# Create entry widget for height input
+entry_height = tk.Entry(root)
+entry_height.pack()
+
+label_weight = tk.Label(root, text="Weight (kg):")
+label_weight.pack()
+
+# Create entry widget for weight input
+entry_weight = tk.Entry(root)
+entry_weight.pack()
+
+# Create button to calculate BMI
+button_calculate = tk.Button(root, text="Calculate BMI", command=calculate_bmi)
+button_calculate.pack(pady=10)
+
+# Create label to display BMI result
+label_result = tk.Label(root, text="")
+label_result.pack()
+
+# Create label to display BMI category
+label_category = tk.Label(root, text="")
+label_category.pack()
+
+root.mainloop()  # Start the main event loop
+
+
+"""
+EXPLANATION OF THE CODE
+
+Import Modules: Imports necessary modules (tkinter, messagebox) for GUI and error handling.
+Function calculate_bmi(): Handles BMI calculation based on user input, validates inputs, displays BMI result, and categorizes BMI.
+Main Window (root): Creates the main application window (Tk()), sets title (title() method).
+Labels and Entry Widgets: Displays instructions, prompts for height and weight inputs using Label and Entry widgets.
+Button (Calculate BMI): Triggers BMI calculation when clicked, calls calculate_bmi() function.
+Result Labels: Displays calculated BMI (label_result) and BMI category (label_category).
+"""
+
+
+"""
+NOTIONS COVERED
+
+Creating the main window (Tk()) and setting its title.
+Using widgets (Label, Entry, Button) to collect user input.
+Event handling (command parameter in Button for calculate_bmi() function).
+Displaying results dynamically (Label updates with config() method).
+Error handling using messagebox (showerror() for invalid input).
+Basic arithmetic operations for BMI calculation.
+Displaying text and changing text color (Label properties).
+Validating user input for numeric values (try-except block).
+Understanding units (centimeters for height, kilograms for weight).
+"""
